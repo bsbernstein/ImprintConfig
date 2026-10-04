@@ -114,12 +114,12 @@
             bindings = <&kp DOWN>, <&ht_dbl PG_DN DOWN>;
         };
 
-        // DANCE_4: hold Caps Lock, double tap Ctrl+Shift+A (Word all caps)
+        // DANCE_4: tap Num Lock, hold Caps Lock, double tap Ctrl+Shift+A (Word all caps)
         td4: tap_dance_4 {
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
             tapping-term-ms = <TAPPING_TERM>;
-            bindings = <&none>, <&kp LC(LS(A))>;
+            bindings = <&kp KP_NUM>, <&kp LC(LS(A))>;
         };
         td4_ht: tap_dance_4_hold {
             compatible = "zmk,behavior-hold-tap";
@@ -294,8 +294,8 @@
 &kp BSPC        AS(A)        HC(R)        HC(S)      AS(T)      AS(G)                              AS(M)       AS(N)           AS(E)          AS(I)           AS(O)           AS(SQT)
 &kp LSHFT       HC(Z)        HC(X)        HC(C)      AS(D)      HC(V)                              HC(K)       HC(H)           AS(COMMA)      &kp DOT         AS(FSLH)        &kp DEL
 &kp LCTRL       &kp LALT     &td1         &pilcrow   &section                                                  &td6_ht LC(B) 0 &parens        &ht LBKT LPAR   &ht RBKT RPAR   &brackets
-                                                     &td5       &ht LC(LS(SPACE)) TAB  &td4_ht CAPS 0          &ht LG(L) LC(LA(DEL))  &td9_ht LC(KP_MINUS) 0  &ht LS(RET) RET
                                                      &td2       &td3                   &mo SYS                 &mo SYS                &td7                    &td8
+                                                     &td5       &ht LC(LS(SPACE)) TAB  &td4_ht CAPS 0          &ht LG(L) LC(LA(DEL))  &td9_ht LC(KP_MINUS) 0  &ht LS(RET) RET
             >;
         };
 
