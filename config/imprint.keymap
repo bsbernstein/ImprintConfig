@@ -319,7 +319,7 @@
 &trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &mo SCROLL  &mkp RCLK  &mkp MCLK  &mkp LCLK  &trans            &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &mkp MCLK   &mkp RCLK  &mo SCROLL &mkp LCLK  &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans     &trans     &trans                               &trans  &trans  &trans  &trans  &trans
                                           &trans     &trans  &trans    &trans  &trans  &trans
@@ -333,7 +333,7 @@
 &trans  &trans  &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &mkp RCLK  &mkp MCLK  &mkp LCLK  &trans            &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &mkp MCLK  &mkp RCLK  &trans  &mkp LCLK  &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans     &trans     &trans                               &trans  &trans  &trans  &trans  &trans
                                       &trans     &trans  &trans    &trans  &trans  &trans
@@ -358,7 +358,7 @@
 };
 
 // Right-hand trackball: cursor by default, auto mouse layer while it moves,
-// and scrolling while the Scroll key (A position on the Mouse layer) is held.
+// and scrolling while the Scroll key (S position on the Mouse layer) is held.
 &trackball_peripheral_listener {
     input-processors = <&zip_mouse_layer MOUSE 700>;
 
