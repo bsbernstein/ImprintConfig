@@ -274,13 +274,13 @@
     // Auto mouse layer for the right trackball: moving the ball turns on the
     // MOUSE layer for 700 ms. It is not turned on if a key was pressed in the
     // last 150 ms, so brushing the ball while typing doesn't swallow letters.
-    // Pressing any key other than the click, scroll, and modifier keys turns
-    // it straight back off.
+    // Pressing any key other than the click keys (thumb keys 72 and 73 included),
+    // the scroll key, and the modifiers turns it straight back off.
     zip_mouse_layer: zip_mouse_layer {
         compatible = "zmk,input-processor-temp-layer";
         #input-processor-cells = <2>;
         require-prior-idle-ms = <150>;
-        excluded-positions = <37 38 39 40 48 60 61 62>;
+        excluded-positions = <37 38 39 40 48 60 61 62 72 73>;
     };
 
     keymap {
@@ -323,7 +323,7 @@
 &trans  &mkp MCLK   &mkp RCLK  &mo SCROLL &mkp LCLK  &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans     &trans     &trans                               &trans  &trans  &trans  &trans  &trans
-                                          &trans     &trans  &trans    &trans  &trans  &trans
+                                          &trans     &trans  &mkp LCLK &mkp RCLK  &trans  &trans
                                           &trans     &trans  &trans    &trans  &trans  &trans
             >;
         };
@@ -339,7 +339,7 @@
 &trans  &mkp MCLK   &mkp RCLK  &mo SCROLL &mkp LCLK  &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans     &trans     &trans                               &trans  &trans  &trans  &trans  &trans
-                                          &trans     &trans  &trans    &trans  &trans  &trans
+                                          &trans     &trans  &mkp LCLK &mkp RCLK  &trans  &trans
                                           &trans     &trans  &trans    &trans  &trans  &trans
             >;
         };
