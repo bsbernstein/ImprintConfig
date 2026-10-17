@@ -272,10 +272,11 @@
     };
 
     // Auto mouse layer for the right trackball: moving the ball turns on the
-    // MOUSE layer for 700 ms. It is not turned on if a key was pressed in the
-    // last 150 ms, so brushing the ball while typing doesn't swallow letters.
-    // Pressing any key other than the click keys (thumb keys 72 and 73 included),
-    // the scroll key, and the modifiers turns it straight back off.
+    // MOUSE layer until the ball has been still for 10 seconds. It is not turned
+    // on if a key was pressed in the last 150 ms, so brushing the ball while
+    // typing doesn't swallow letters. Pressing any key other than the click keys
+    // (thumb keys 72 and 73 included), the scroll key, and the modifiers turns it
+    // off sooner.
     zip_mouse_layer: zip_mouse_layer {
         compatible = "zmk,input-processor-temp-layer";
         #input-processor-cells = <2>;
@@ -329,7 +330,7 @@
         };
 
         // Same keys as the Mouse layer, but turned on and off with key 0 instead of
-        // by the trackball, so the trackball's auto-off timer can't switch it off.
+        // by the trackball, so neither typing nor a still ball switches it off.
         mouse_lock_layer {
             display-name = "Mouse lock";
             bindings = <
@@ -374,10 +375,10 @@
     };
 };
 
-// Right-hand trackball: cursor by default, auto mouse layer while it moves,
+// Right-hand trackball: cursor by default, auto mouse layer once it moves,
 // and scrolling while the Scroll key (S position on the Mouse layer) is held.
 &trackball_peripheral_listener {
-    input-processors = <&zip_mouse_layer MOUSE 700>;
+    input-processors = <&zip_mouse_layer MOUSE 10000>;
 
     scroller {
         layers = <SCROLL>;
