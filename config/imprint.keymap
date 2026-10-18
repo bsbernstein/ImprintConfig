@@ -28,8 +28,9 @@
 #define BASE   0
 #define ACCENT 1
 #define MOUSE  2
-#define SCROLL 3
-#define SYS    4
+#define MOUSE_LOCK 3
+#define SCROLL 4
+#define SYS    5
 
 // ErgoDox TAPPING_TERM was 198 ms; QMK's default auto shift timeout is 175 ms.
 #define TAPPING_TERM 198
@@ -271,15 +272,16 @@
     };
 
     // Auto mouse layer for the right trackball: moving the ball turns on the
-    // MOUSE layer for 700 ms. It is not turned on if a key was pressed in the
-    // last 150 ms, so brushing the ball while typing doesn't swallow letters.
-    // Pressing any key other than the click, scroll, and modifier keys turns
-    // it straight back off.
+    // MOUSE layer until the ball has been still for 10 seconds. It is not turned
+    // on if a key was pressed in the last 150 ms, so brushing the ball while
+    // typing doesn't swallow letters. Pressing any key other than the click keys
+    // (thumb keys 72 and 73 included), the scroll key, and the modifiers turns it
+    // off sooner.
     zip_mouse_layer: zip_mouse_layer {
         compatible = "zmk,input-processor-temp-layer";
         #input-processor-cells = <2>;
         require-prior-idle-ms = <150>;
-        excluded-positions = <37 38 39 40 48 60 61 62>;
+        excluded-positions = <37 38 39 40 48 60 61 62 72 73>;
     };
 
     keymap {
@@ -288,7 +290,7 @@
         base_layer {
             display-name = "Colemak";
             bindings = <
-&kp F1          &kp F2       &kp F3       &kp F4     &kp F5     &kp F6                             &kp F7      &kp F8          &kp F9         &kp F10         &kp F11         &kp F12
+&tog MOUSE_LOCK &kp F1       &kp F2       &kp F3     &kp F4     &kp F5                             &kp F6      &kp F7          &kp F8         &kp F9          &kp F10         &kp F11
 &ht ESC GRAVE   AS(N1)       AS(N2)       AS(N3)     AS(N4)     AS(N5)                             AS(N6)      AS(N7)          AS(N8)         AS(N9)          AS(N0)          AS(EQUAL)
 &td0_ht LA(LS(FSLH)) 0       AS(Q)        AS(W)      HC(F)      HC(P)      HC(B)                   AS(J)       AS(L)           HC(U)          HC(Y)           AS(SEMI)        AS(BSLH)
 &kp BSPC        AS(A)        HC(R)        HC(S)      AS(T)      AS(G)                              AS(M)       AS(N)           AS(E)          AS(I)           AS(O)           AS(SQT)
@@ -319,10 +321,26 @@
 &trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &mo SCROLL  &mkp RCLK  &mkp MCLK  &mkp LCLK  &trans            &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &mkp MCLK   &mkp RCLK  &mo SCROLL &mkp LCLK  &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans      &trans     &trans     &trans                               &trans  &trans  &trans  &trans  &trans
+                                          &trans     &trans  &mkp LCLK &mkp RCLK  &trans  &trans
                                           &trans     &trans  &trans    &trans  &trans  &trans
+            >;
+        };
+
+        // Same keys as the Mouse layer, but turned on and off with key 0 instead of
+        // by the trackball, so neither typing nor a still ball switches it off.
+        mouse_lock_layer {
+            display-name = "Mouse lock";
+            bindings = <
+&trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &mkp MCLK   &mkp RCLK  &mo SCROLL &mkp LCLK  &trans            &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans      &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans      &trans     &trans     &trans                               &trans  &trans  &trans  &trans  &trans
+                                          &trans     &trans  &mkp LCLK &mkp RCLK  &trans  &trans
                                           &trans     &trans  &trans    &trans  &trans  &trans
             >;
         };
@@ -333,7 +351,7 @@
 &trans  &trans  &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &mkp RCLK  &mkp MCLK  &mkp LCLK  &trans            &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &mkp MCLK  &mkp RCLK  &trans  &mkp LCLK  &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans     &trans     &trans     &trans            &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans     &trans     &trans                               &trans  &trans  &trans  &trans  &trans
                                       &trans     &trans  &trans    &trans  &trans  &trans
@@ -357,10 +375,10 @@
     };
 };
 
-// Right-hand trackball: cursor by default, auto mouse layer while it moves,
-// and scrolling while the Scroll key (A position on the Mouse layer) is held.
+// Right-hand trackball: cursor by default, auto mouse layer once it moves,
+// and scrolling while the Scroll key (S position on the Mouse layer) is held.
 &trackball_peripheral_listener {
-    input-processors = <&zip_mouse_layer MOUSE 700>;
+    input-processors = <&zip_mouse_layer MOUSE 10000>;
 
     scroller {
         layers = <SCROLL>;
